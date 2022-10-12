@@ -22,3 +22,5 @@ verify:
   stage: test
   script:
     - 'mvn $MAVEN_CLI_OPTS verify'
+  tags:
+    - ranking-info-runner
