@@ -3,7 +3,7 @@ package de.hdawg.rankinginfo.importer.service;
 import de.hdawg.rankinginfo.importer.exception.FilenameFormatException;
 import de.hdawg.rankinginfo.importer.model.Federation;
 import de.hdawg.rankinginfo.importer.model.Nationality;
-import de.hdawg.rankinginfo.importer.model.Ranking;
+import de.hdawg.rankinginfo.importer.model.ImportedRanking;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,14 +13,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class RankingFileProcessorTest {
+public class ImportedRankingFileProcessorTest {
 
   @Test
   @DisplayName("make sure player data was completely loaded from import file")
   void makeSureAllPlayerDataWasLoaded() {
     RankingFileProcessor sut = new RankingFileProcessor();
     int expected = 1691;
-    List<Ranking> actual = sut.readRankingsFromImportFile("src/test/resources/tabula-AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv");
+    List<ImportedRanking> actual = sut.readRankingsFromImportFile("src/test/resources/tabula-AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv");
 
     assertEquals(expected, actual.size());
     assertEquals(Federation.WTB, actual.get(0).getFederation());

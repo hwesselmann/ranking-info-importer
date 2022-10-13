@@ -7,9 +7,8 @@ import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
 import de.hdawg.rankinginfo.importer.exception.FilenameFormatException;
 import de.hdawg.rankinginfo.importer.model.Federation;
+import de.hdawg.rankinginfo.importer.model.ImportedRanking;
 import de.hdawg.rankinginfo.importer.model.Nationality;
-import de.hdawg.rankinginfo.importer.model.Ranking;
-import de.hdawg.rankinginfo.importer.model.RankingPosition;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.FileReader;
@@ -20,7 +19,6 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 @Slf4j
@@ -28,7 +26,7 @@ public class RankingFileProcessor {
 
   private static final List<Integer> ALLOWED_MONTHS = List.of(1, 4, 7, 10);
 
-  public List<Ranking> readRankingsFromImportFile(String filename) {
+  public List<ImportedRanking> readRankingsFromImportFile(String filename) {
     Path path = Paths.get(filename);
     if (Files.exists(path) && Files.isRegularFile(path)) {
       try {
@@ -63,50 +61,43 @@ public class RankingFileProcessor {
     }
   }
 
-  private List<Ranking> readAndMapImportFile(String filename, LocalDate period) throws IOException, CsvException {
-    List<Ranking> rankings = new ArrayList<>();
+  private List<ImportedRanking> readAndMapImportFile(String filename, LocalDate period) throws IOException, CsvException {
+    List<ImportedRanking> importedRankings = new ArrayList<>();
 
     CSVParser parser = new CSVParserBuilder()
-        .withSeparator(',')
-        .build();
+      .withSeparator(',')
+      .build();
 
     CSVReader reader = new CSVReaderBuilder(new FileReader(filename))
-        .withCSVParser(parser)
-        .build();
+      .withCSVParser(parser)
+      .build();
 
     List<String[]> lines = new ArrayList<>();
     lines = reader.readAll();
     reader.close();
 
     for (String[] line : lines) {
-      rankings.add(mapRankingFromLine(line, period));
+      importedRankings.add(mapRankingFromLine(line, period));
     }
-    return rankings;
+    return importedRankings;
   }
 
-  private Ranking mapRankingFromLine(String[] line, LocalDate period) {
+  private ImportedRanking mapRankingFromLine(String[] line, LocalDate period) {
     Long dtbId = Long.parseLong(line[4].split(" ")[0]);
     String federation = line[4].split(" ")[1];
 
-    RankingPosition rankingPosition = RankingPosition
-        .builder()
-        .position(Integer.parseInt(line[0]))
-        .variant("")
-        .ageGroup("overall")
-        .build();
-    HashMap<String, RankingPosition> rankingPositions = new HashMap<>();
-    rankingPositions.put("overall", rankingPosition);
-    return Ranking
-        .builder()
-        .lastname(line[1])
-        .firstname(line[2])
-        .nationality(Nationality.valueOf(line[3]))
-        .club(line[5])
-        .points(line[6])
-        .rankingPeriod(period)
-        .rankingPositions(rankingPositions)
-        .dtbId(dtbId)
-        .federation(Federation.valueOf(federation))
-        .build();
+    return ImportedRanking
+      .builder()
+      .lastname(line[1])
+      .firstname(line[2])
+      .nationality(Nationality.valueOf(line[3]))
+      .club(line[5])
+      .points(line[6])
+      .rankingPeriod(period)
+      .ageGroup("overall")
+      .position(Integer.parseInt(line[0]))
+      .dtbId(dtbId)
+      .federation(Federation.valueOf(federation))
+      .build();
   }
 }

@@ -4,11 +4,10 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 
 @Getter
 @Builder
-public class Ranking {
+public class ImportedRanking {
   private LocalDate rankingPeriod;
   private Long dtbId;
   private String lastname;
@@ -17,5 +16,6 @@ public class Ranking {
   private Nationality nationality;
   private Federation federation;
   private String club;
-  private HashMap<String, RankingPosition> rankingPositions;
+  private String ageGroup;
+  private Integer position;
 }
