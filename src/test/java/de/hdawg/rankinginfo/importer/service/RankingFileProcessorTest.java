@@ -1,9 +1,10 @@
 package de.hdawg.rankinginfo.importer.service;
 
 import de.hdawg.rankinginfo.importer.exception.FilenameFormatException;
+import de.hdawg.rankinginfo.importer.exception.UnknownNationalityException;
 import de.hdawg.rankinginfo.importer.model.Federation;
 import de.hdawg.rankinginfo.importer.model.Nationality;
-import de.hdawg.rankinginfo.importer.model.ImportedRanking;
+import de.hdawg.rankinginfo.importer.model.Ranking;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,14 +14,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ImportedRankingFileProcessorTest {
+public class RankingFileProcessorTest {
 
   @Test
   @DisplayName("make sure player data was completely loaded from import file")
   void makeSureAllPlayerDataWasLoaded() {
     RankingFileProcessor sut = new RankingFileProcessor();
     int expected = 1691;
-    List<ImportedRanking> actual = sut.readRankingsFromImportFile("src/test/resources/tabula-AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv");
+    List<Ranking> actual = sut.readRankingsFromImportFile("src/test/resources/AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv");
 
     assertEquals(expected, actual.size());
     assertEquals(Federation.WTB, actual.get(0).getFederation());
@@ -33,7 +34,7 @@ public class ImportedRankingFileProcessorTest {
   void verifyCorrectSplittingOfFileName() {
     RankingFileProcessor sut = new RankingFileProcessor();
     LocalDate expected = LocalDate.of(2022, 10, 1);
-    LocalDate actual = sut.getPeriodFromFilename("tabula-AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv");
+    LocalDate actual = sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv");
 
     assertEquals(expected, actual);
   }
@@ -44,7 +45,7 @@ public class ImportedRankingFileProcessorTest {
     RankingFileProcessor sut = new RankingFileProcessor();
 
     Throwable exception = assertThrows(FilenameFormatException.class, () -> {
-      sut.getPeriodFromFilename("tabula-AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter.csv");
+      sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter.csv");
     });
     assertEquals("No date could be found when inspecting the import file", exception.getMessage());
   }
@@ -55,18 +56,29 @@ public class ImportedRankingFileProcessorTest {
     RankingFileProcessor sut = new RankingFileProcessor();
 
     Throwable exception = assertThrows(FilenameFormatException.class, () -> {
-      sut.getPeriodFromFilename("tabula-AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_19990101.csv");
+      sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_19990101.csv");
     });
     assertEquals("No valid date could be extracted from the file", exception.getMessage());
 
     exception = assertThrows(FilenameFormatException.class, () -> {
-      sut.getPeriodFromFilename("tabula-AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20330301.csv");
+      sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20330301.csv");
     });
     assertEquals("No valid date could be extracted from the file", exception.getMessage());
 
     exception = assertThrows(FilenameFormatException.class, () -> {
-      sut.getPeriodFromFilename("tabula-AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20330431.csv");
+      sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20330431.csv");
     });
     assertEquals("No valid date could be extracted from the file", exception.getMessage());
+  }
+
+  @Test
+  @DisplayName("ensure an error is thrown when an unknown nationality is imported")
+  void ensureExceptionIsThrownWhenAnUnknownNationalityIsEncountered() {
+    RankingFileProcessor sut = new RankingFileProcessor();
+
+    Throwable exception = assertThrows(UnknownNationalityException.class, () -> {
+      sut.readRankingsFromImportFile("src/test/resources/unknown-nationality-AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv");
+    });
+    assertEquals("the given nationality is not mappable in the current version.", exception.getMessage());
   }
 }

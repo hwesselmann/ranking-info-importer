@@ -7,9 +7,9 @@ import java.time.LocalDate;
 
 @Getter
 @Builder
-public class ImportedRanking {
+public class Ranking implements Comparable<Ranking> {
   private LocalDate rankingPeriod;
-  private Long dtbId;
+  private String dtbId;
   private String lastname;
   private String firstname;
   private String points;
@@ -18,4 +18,11 @@ public class ImportedRanking {
   private String club;
   private String ageGroup;
   private Integer position;
+  private Boolean yearOfBirthRanking;
+  private Boolean overallYouthRanking;
+
+  @Override
+  public int compareTo(Ranking otherRanking) {
+    return getPosition().compareTo(otherRanking.position);
+  }
 }
