@@ -29,8 +29,7 @@ verify:
     reports:
       junit:
         - target/surefire-reports/TEST-*.xml
-  tags:
-    - ranking-info-runner
+  tags: [ranking-info-runner]
 
 sonarcloud-check:
   stage: test
@@ -43,3 +42,4 @@ sonarcloud-check:
   only:
     - merge_requests
     - main
+  tags: [ranking-info-runner]
