@@ -1,3 +1,6 @@
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
 variables:
   MAVEN_OPTS: >-
     -Dhttps.protocols=TLSv1.2
