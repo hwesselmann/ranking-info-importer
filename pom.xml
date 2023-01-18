@@ -14,21 +14,22 @@
     <!-- sonarcube settings -->
     <sonar.organization>ranking-info</sonar.organization>
     <!-- JaCoCo Properties -->
-    <jacoco.version>0.8.6</jacoco.version>
+    <jacoco.version>0.8.8</jacoco.version>
     <sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
     <sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
     <sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
     <sonar.language>java</sonar.language>
     <!-- dependencies -->
     <lombok.version>1.18.24</lombok.version>
-    <logback-core.version>1.4.4</logback-core.version>
-    <slf4j-api.version>2.0.3</slf4j-api.version>
-    <junit-jupiter-engine.version>5.9.0</junit-jupiter-engine.version>
+    <logback-core.version>1.4.5</logback-core.version>
+    <slf4j-api.version>2.0.6</slf4j-api.version>
+    <junit-jupiter-engine.version>5.9.2</junit-jupiter-engine.version>
+    <opencsv.version>5.7.1</opencsv.version>
     <!-- plugins -->
-    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
-    <maven-surefire-plugin.version>3.0.0-M7</maven-surefire-plugin.version>
+    <maven-compiler-plugin.version>3.10.1</maven-compiler-plugin.version>
+    <maven-surefire-plugin.version>3.0.0-M8</maven-surefire-plugin.version>
     <sonar-maven-plugin.version>3.9.1.2184</sonar-maven-plugin.version>
-    <jacoco-maven-plugin.version>0.8.6</jacoco-maven-plugin.version>
+    <jacoco-maven-plugin.version>0.8.8</jacoco-maven-plugin.version>
   </properties>
 
   <dependencies>
@@ -36,7 +37,7 @@
     <dependency>
       <groupId>com.opencsv</groupId>
       <artifactId>opencsv</artifactId>
-      <version>5.7.0</version>
+      <version>${opencsv.version}</version>
     </dependency>
 
     <!-- logging -->
