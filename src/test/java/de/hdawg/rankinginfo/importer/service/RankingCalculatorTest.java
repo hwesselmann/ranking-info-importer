@@ -18,7 +18,7 @@ public class RankingCalculatorTest {
 
   @DisplayName("test the calculation of ranking positions for a given list of players")
   @Test
-  public void testRankingCalculation() {
+  void testRankingCalculation() {
     LocalDate rankingPeriod = LocalDate.of(2022, 10, 1);
     List<Ranking> inRankings = new ArrayList<>();
     inRankings.add(createTestRankings(rankingPeriod, "10800001", Nationality.BEL, "1189,4", 60));
@@ -67,7 +67,7 @@ public class RankingCalculatorTest {
 
   @DisplayName("check if a given player is in an age group given")
   @Test
-  public void checkForAgeGroup() {
+  void checkForAgeGroup() {
     assertTrue(sut.isInAgeGroup("10800000", List.of(15, 16), LocalDate.of(2023, 7, 10)));
     assertTrue(sut.isInAgeGroup("10900000", List.of(13, 14), LocalDate.of(2023, 7, 10)));
     assertTrue(sut.isInAgeGroup("11000000", List.of(13, 14), LocalDate.of(2023, 7, 10)));
@@ -78,7 +78,7 @@ public class RankingCalculatorTest {
 
   @DisplayName("check if a ranking position should be counted up according to the set criteria")
   @Test
-  public void checkIfARankingPositionsSHouldBeCountedUp() {
+  void checkIfARankingPositionsSHouldBeCountedUp() {
     assertTrue(sut.rankingCounterNeedsUpdate(Nationality.GER, "1,0"));
     assertFalse(sut.rankingCounterNeedsUpdate(Nationality.GER, "0,0"));
     assertFalse(sut.rankingCounterNeedsUpdate(Nationality.GER, "PR"));
@@ -88,7 +88,7 @@ public class RankingCalculatorTest {
 
   @DisplayName("check if list of eligible age groups is filled correctly")
   @Test
-  public void checkIfAgeGroupListGetsFilledCorrectly() {
+  void checkIfAgeGroupListGetsFilledCorrectly() {
     assertEquals(4, sut.getEligibleAgeGroups(14).size());
     assertEquals(1, sut.getEligibleAgeGroups(11).size());
     assertEquals(8, sut.getEligibleAgeGroups(18).size());
@@ -99,7 +99,7 @@ public class RankingCalculatorTest {
 
   @DisplayName("check if list of eligible age groups throws an exception if parameters are oob")
   @Test
-  public void checkIfAgeGroupListThrowsExceptionOnInvalidParameters() {
+  void checkIfAgeGroupListThrowsExceptionOnInvalidParameters() {
     assertThrows(IllegalStateException.class, () -> sut.getEligibleAgeGroups(10));
     assertThrows(IllegalStateException.class, () -> sut.getEligibleAgeGroups(19));
   }

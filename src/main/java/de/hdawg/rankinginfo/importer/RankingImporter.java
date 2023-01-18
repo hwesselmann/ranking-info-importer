@@ -17,18 +17,19 @@ public class RankingImporter {
 
   public static void main(String[] args) {
     RankingImporter rankingImporter = new RankingImporter();
-    rankingImporter.importRankings();
+    String file = "src/test/resources/AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv";
+    rankingImporter.importRankings(file);
   }
 
   /**
    * main method orchestrating the flow of a ranking file import process.
    */
-  public void importRankings() {
+  public void importRankings(String filename) {
     log.info("new ranking-file will be imported into the database");
     RankingFileProcessor rankingFileProcessor = new RankingFileProcessor();
     RankingCalculator rankingCalculator = new RankingCalculator();
     long importStarted = System.currentTimeMillis();
-    List<Ranking> rankings = rankingFileProcessor.readRankingsFromImportFile("src/test/resources/AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv");
+    List<Ranking> rankings = rankingFileProcessor.readRankingsFromImportFile(filename);
     if (!rankings.isEmpty()) {
       Map<String, Map<String, List<Ranking>>> calculatedRankings = rankingCalculator.calculateRankings(rankings);
       storeRankings(calculatedRankings);
