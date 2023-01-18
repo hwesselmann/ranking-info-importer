@@ -6,6 +6,7 @@ import de.hdawg.rankinginfo.importer.service.RankingFileProcessor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * main entry class for triggering a ranking-file import.
@@ -28,7 +29,8 @@ public class RankingImporter {
     long importStarted = System.currentTimeMillis();
     List<Ranking> rankings = rankingFileProcessor.readRankingsFromImportFile("src/test/resources/AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv");
     if (!rankings.isEmpty()) {
-      rankingCalculator.calculateRankings(rankings);
+      Map<String, Map<String, List<Ranking>>> calculatedRankings = rankingCalculator.calculateRankings(rankings);
+      // save to datastore
     }
     long importFinished = System.currentTimeMillis();
     log.info("ranking import finished in {} miliseconds", (importFinished - importStarted));

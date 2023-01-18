@@ -1,19 +1,28 @@
 package de.hdawg.rankinginfo.importer.service;
 
+import de.hdawg.rankinginfo.importer.model.Nationality;
 import de.hdawg.rankinginfo.importer.model.Ranking;
 import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
+/**
+ * class for ranking position calculation.
+ */
 @Slf4j
 public class RankingCalculator {
 
   private static final int BASE_YEAR_FOR_AGE_CALCULATION = 2000;
+  private static final List<String> VALUES_FOR_PROTECTED_RANKINGS = List.of("0,0", "PR", "Einst.");
 
+  /**
+   * public interface for ranking calculation.
+   *
+   * @param importRankings list of overall youth rankings.
+   * @return map of separate rankings per age group including special modifiers
+   */
   public Map<String, Map<String, List<Ranking>>> calculateRankings(List<Ranking> importRankings) {
     LocalDate rankingPeriod = importRankings.get(0).getRankingPeriod();
     log.info("U11 will be yob {} in the current ranking period.", rankingPeriod.getYear() - 11);
@@ -23,7 +32,7 @@ public class RankingCalculator {
     calculatedRankings.put("overall", calculateOverallAgeGroupRankings(importRankings, rankingPeriod));
     calculatedRankings.put("yearOfBirth", calculateYearOfBirthRankings(importRankings, rankingPeriod));
 
-    // check if this is the final ranking for this year
+    // check if this is the final ranking for this year. If so, do an extra calculation.
     if (rankingPeriod.getMonthValue() == 12) {
       calculatedRankings.put("endOfYear", calculateFinalRankingsForThisYear(importRankings, rankingPeriod));
     }
@@ -34,58 +43,131 @@ public class RankingCalculator {
   /**
    * calculate the official rankings published by the German Tennis Federation (U12, U14, U16, U18).
    *
-   * @param rankings
-   * @param rankingPeriod
-   * @return
+   * @param rankings overall rankings to derive age group rankings from
+   * @param rankingPeriod ranking period to calculate
+   * @return map containing official listings
    */
   Map<String, List<Ranking>> calculateOfficialAgeGroupRankings(List<Ranking> rankings, LocalDate rankingPeriod) {
+    Map<String, List<Ranking>> listings = new HashMap<>();
     List<Integer> ageGroups = List.of(12, 14, 16, 18);
     for (int ageGroup : ageGroups) {
-      // create list of rankings to apply
-      // calculate rankings
+      List<Ranking> filteredRankings = rankings.stream()
+          .filter(r -> isInAgeGroup(r.getDtbId(), List.of(ageGroup, ageGroup - 1), rankingPeriod))
+          .collect(Collectors.toList());
+
+      String ageGroupString = "U" + ageGroup;
+      listings.put(ageGroupString, performRankingCalculation(filteredRankings, rankingPeriod, ageGroupString, false, false, false));
     }
-    return Collections.emptyMap();
+    return listings;
   }
 
   /**
    * calculate the rankings for all age groups while also taking younger players into account.
    *
-   * @param rankings
-   * @param rankingPeriod
-   * @return
+   * @param rankings overall rankings to derive age group rankings from
+   * @param rankingPeriod ranking period to calculate
+   * @return map containing calculated listings
    */
   Map<String, List<Ranking>> calculateOverallAgeGroupRankings(List<Ranking> rankings, LocalDate rankingPeriod) {
-    return Collections.emptyMap();
+    Map<String, List<Ranking>> listings = new HashMap<>();
+    List<Integer> ageGroups = List.of(11, 12, 13, 14, 15, 16, 17, 18);
+    for (int ageGroup : ageGroups) {
+      List<Integer> eligibleAgeGroups = getEligibleAgeGroups(ageGroup);
+      List<Ranking> filteredRankings = rankings.stream()
+          .filter(r -> isInAgeGroup(r.getDtbId(), eligibleAgeGroups, rankingPeriod))
+          .toList();
+      String ageGroupString = "U" + ageGroup;
+      listings.put(ageGroupString, performRankingCalculation(filteredRankings, rankingPeriod, ageGroupString, true, false, false));
+    }
+    return listings;
+  }
+
+  List<Integer> getEligibleAgeGroups(int ageGroup) {
+    if (ageGroup < 11 || ageGroup > 18) {
+      throw new IllegalStateException();
+    }
+    List<Integer> eligibleAgeGroups = new ArrayList<>();
+    for (int i = ageGroup; i >= 11; i--) {
+      eligibleAgeGroups.add(i);
+    }
+    return eligibleAgeGroups;
   }
 
   /**
    * calculate the rankings for each year of birth separately.
    *
-   * @param rankings
-   * @param rankingPeriod
-   * @return
+   * @param rankings overall rankings to derive age group rankings from
+   * @param rankingPeriod ranking period to calculate
+   * @return map containing calculated listings
    */
   Map<String, List<Ranking>> calculateYearOfBirthRankings(List<Ranking> rankings, LocalDate rankingPeriod) {
-    return Collections.emptyMap();
+    Map<String, List<Ranking>> listings = new HashMap<>();
+    List<Integer> ageGroups = List.of(11, 12, 13, 14, 15, 16, 17, 18);
+    for (int ageGroup : ageGroups) {
+      List<Ranking> filteredRankings = rankings.stream()
+          .filter(r -> isInAgeGroup(r.getDtbId(), List.of(ageGroup), rankingPeriod))
+          .toList();
+      String ageGroupString = "U" + ageGroup;
+      listings.put(ageGroupString, performRankingCalculation(rankings, rankingPeriod, ageGroupString, false, true, false));
+    }
+    return listings;
   }
 
   /**
    * calculate the final rankings for a year.
    *
-   * @param rankings
-   * @param rankingPeriod
-   * @return
+   * @param rankings overall rankings to derive age group rankings from
+   * @param rankingPeriod ranking period to calculate
+   * @return map containing calculated listings
    */
   Map<String, List<Ranking>> calculateFinalRankingsForThisYear(List<Ranking> rankings, LocalDate rankingPeriod) {
-    return Collections.emptyMap();
+    Map<String, List<Ranking>> listings = new HashMap<>();
+    List<Integer> ageGroups = List.of(12, 14, 16, 18);
+    for (int ageGroup : ageGroups) {
+      List<Ranking> filteredRankings = rankings.stream()
+          .filter(r -> isInAgeGroup(r.getDtbId(), List.of(ageGroup, ageGroup - 1), rankingPeriod.minusDays(1L)))
+          .toList();
+      String ageGroupString = "U" + ageGroup;
+      listings.put(ageGroupString, performRankingCalculation(filteredRankings, rankingPeriod, ageGroupString, false, false, true));
+    }
+    return listings;
   }
 
-  List<Ranking> performRankingCalculation(List<Ranking> ranings, LocalDate rankingPeriod, boolean isOverallRanking, boolean isYobRanking, boolean isEndOfYearRanking) {
+  List<Ranking> performRankingCalculation(List<Ranking> rankings, LocalDate rankingPeriod, String ageGroup, boolean isOverallRanking, boolean isYobRanking, boolean isEndOfYearRanking) {
+    List<Ranking> calculatedRankings = new ArrayList<>();
     int lastRank = 0;
     int currentRank = 0;
     int rankingCounter = 1;
 
-    return Collections.emptyList();
+    for (Ranking currItem : rankings) {
+      // check if a new ranking position should be applied
+      if (currItem.getPosition() > lastRank) {
+        lastRank = currItem.getPosition();
+        currentRank = rankingCounter;
+      }
+
+      Ranking calculatedRanking = Ranking.builder()
+          .yearOfBirthRanking(isEndOfYearRanking)
+          .overallYouthRanking(isOverallRanking)
+          .endOfYearRanking(isEndOfYearRanking)
+          .rankingPeriod(rankingPeriod)
+          .club(currItem.getClub())
+          .dtbId(currItem.getDtbId())
+          .federation(currItem.getFederation())
+          .nationality(currItem.getNationality())
+          .lastname(currItem.getLastname())
+          .firstname(currItem.getFirstname())
+          .points(currItem.getPoints())
+          .ageGroup(ageGroup)
+          .position(currentRank)
+          .build();
+      calculatedRankings.add(calculatedRanking);
+
+      if (rankingCounterNeedsUpdate(currItem.getNationality(), currItem.getPoints())) {
+        rankingCounter += 1;
+      }
+    }
+    return calculatedRankings;
   }
 
   /**
@@ -93,13 +175,25 @@ public class RankingCalculator {
    * I am completely aware that someone needs to adapt the calculation in the year 2010
    * in case this app lives that long.
    *
-   * @param dtbId id of player to check
-   * @param ageGroup list of age groups to check against
+   * @param dtbId         id of player to check
+   * @param ageGroup      list of age groups to check against
    * @param rankingPeriod ranking period to verify against
    * @return is the given player part of the passed age groups?
    */
   boolean isInAgeGroup(String dtbId, List<Integer> ageGroup, LocalDate rankingPeriod) {
     int age = rankingPeriod.getYear() - (BASE_YEAR_FOR_AGE_CALCULATION + Integer.parseInt(dtbId.substring(1, 3)));
     return ageGroup.contains(age);
+  }
+
+  boolean rankingCounterNeedsUpdate(Nationality nationality, String points) {
+    if (!nationality.equals(Nationality.GER)) {
+      log.debug("ranking position will not be counted up as this only applies to players with German nationality");
+      return false;
+    }
+    if (VALUES_FOR_PROTECTED_RANKINGS.contains(points)) {
+      log.debug("player has a protected ranking, so the ranking position will not be counted up");
+      return false;
+    }
+    return true;
   }
 }

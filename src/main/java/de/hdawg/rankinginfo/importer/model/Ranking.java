@@ -5,6 +5,9 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 
+/**
+ * model class for a ranking used as basis for the ranking-info application.
+ */
 @Getter
 @Builder
 public class Ranking implements Comparable<Ranking> {
@@ -20,6 +23,7 @@ public class Ranking implements Comparable<Ranking> {
   private Integer position;
   private Boolean yearOfBirthRanking;
   private Boolean overallYouthRanking;
+  private Boolean endOfYearRanking;
 
   @Override
   public int compareTo(Ranking otherRanking) {

@@ -44,9 +44,7 @@ public class RankingFileProcessorTest {
   void ensureExceptionIsThrownWhenThereIsNoDatePart() {
     RankingFileProcessor sut = new RankingFileProcessor();
 
-    Throwable exception = assertThrows(FilenameFormatException.class, () -> {
-      sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter.csv");
-    });
+    Throwable exception = assertThrows(FilenameFormatException.class, () -> sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter.csv"));
     assertEquals("No date could be found when inspecting the import file", exception.getMessage());
   }
 
@@ -55,19 +53,13 @@ public class RankingFileProcessorTest {
   void ensureExceptionIsThrownWhenTheDateIsInvalid() {
     RankingFileProcessor sut = new RankingFileProcessor();
 
-    Throwable exception = assertThrows(FilenameFormatException.class, () -> {
-      sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_19990101.csv");
-    });
+    Throwable exception = assertThrows(FilenameFormatException.class, () -> sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_19990101.csv"));
     assertEquals("No valid date could be extracted from the file", exception.getMessage());
 
-    exception = assertThrows(FilenameFormatException.class, () -> {
-      sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20330301.csv");
-    });
+    exception = assertThrows(FilenameFormatException.class, () -> sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20330301.csv"));
     assertEquals("No valid date could be extracted from the file", exception.getMessage());
 
-    exception = assertThrows(FilenameFormatException.class, () -> {
-      sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20330431.csv");
-    });
+    exception = assertThrows(FilenameFormatException.class, () -> sut.getPeriodFromFilename("AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20330431.csv"));
     assertEquals("No valid date could be extracted from the file", exception.getMessage());
   }
 
@@ -76,9 +68,7 @@ public class RankingFileProcessorTest {
   void ensureExceptionIsThrownWhenAnUnknownNationalityIsEncountered() {
     RankingFileProcessor sut = new RankingFileProcessor();
 
-    Throwable exception = assertThrows(UnknownNationalityException.class, () -> {
-      sut.readRankingsFromImportFile("src/test/resources/unknown-nationality-AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv");
-    });
-    assertEquals("the given nationality is not mappable in the current version.", exception.getMessage());
+    Throwable exception = assertThrows(UnknownNationalityException.class, () -> sut.readRankingsFromImportFile("src/test/resources/unknown-nationality-AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv"));
+    assertEquals("the given nationality XYZ is not mappable in the current version.", exception.getMessage());
   }
 }

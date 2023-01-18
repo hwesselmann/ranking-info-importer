@@ -102,23 +102,24 @@ public class RankingFileProcessor {
       Nationality nationality = Nationality.valueOf(line[3]);
 
       return Ranking
-        .builder()
-        .lastname(line[1])
-        .firstname(line[2])
-        .nationality(nationality)
-        .club(line[5])
-        .points(line[6])
-        .rankingPeriod(period)
-        .ageGroup("U18")
-        .position(Integer.parseInt(line[0]))
-        .dtbId(dtbId)
-        .federation(federation)
-        .overallYouthRanking(true)
-        .yearOfBirthRanking(false)
-        .build();
+          .builder()
+          .lastname(line[1])
+          .firstname(line[2])
+          .nationality(nationality)
+          .club(line[5])
+          .points(line[6])
+          .rankingPeriod(period)
+          .ageGroup("overall")
+          .position(Integer.parseInt(line[0]))
+          .dtbId(dtbId)
+          .federation(federation)
+          .overallYouthRanking(false)
+          .yearOfBirthRanking(false)
+          .endOfYearRanking(false)
+          .build();
 
     } catch (IllegalArgumentException e) {
-      String msg = "the given nationality " + line[3] + "is not mappable in the current version.";
+      String msg = "the given nationality " + line[3] + " is not mappable in the current version.";
       log.error(msg);
       throw new UnknownNationalityException(msg);
     }
