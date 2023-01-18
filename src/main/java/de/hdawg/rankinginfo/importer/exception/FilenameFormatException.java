@@ -6,5 +6,5 @@ import lombok.Getter;
 @AllArgsConstructor
 @Getter
 public class FilenameFormatException extends RuntimeException {
-  private String message;
+  private final String message;
 }

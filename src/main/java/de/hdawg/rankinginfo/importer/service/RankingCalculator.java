@@ -6,7 +6,6 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * class for ranking position calculation.
@@ -53,7 +52,7 @@ public class RankingCalculator {
     for (int ageGroup : ageGroups) {
       List<Ranking> filteredRankings = rankings.stream()
           .filter(r -> isInAgeGroup(r.getDtbId(), List.of(ageGroup, ageGroup - 1), rankingPeriod))
-          .collect(Collectors.toList());
+          .toList();
 
       String ageGroupString = "U" + ageGroup;
       listings.put(ageGroupString, performRankingCalculation(filteredRankings, rankingPeriod, ageGroupString, false, false, false));
@@ -108,7 +107,7 @@ public class RankingCalculator {
           .filter(r -> isInAgeGroup(r.getDtbId(), List.of(ageGroup), rankingPeriod))
           .toList();
       String ageGroupString = "U" + ageGroup;
-      listings.put(ageGroupString, performRankingCalculation(rankings, rankingPeriod, ageGroupString, false, true, false));
+      listings.put(ageGroupString, performRankingCalculation(filteredRankings, rankingPeriod, ageGroupString, false, true, false));
     }
     return listings;
   }
@@ -147,7 +146,7 @@ public class RankingCalculator {
       }
 
       Ranking calculatedRanking = Ranking.builder()
-          .yearOfBirthRanking(isEndOfYearRanking)
+          .yearOfBirthRanking(isYobRanking)
           .overallYouthRanking(isOverallRanking)
           .endOfYearRanking(isEndOfYearRanking)
           .rankingPeriod(rankingPeriod)
