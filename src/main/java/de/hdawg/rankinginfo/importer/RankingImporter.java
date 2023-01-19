@@ -1,10 +1,12 @@
 package de.hdawg.rankinginfo.importer;
 
 import de.hdawg.rankinginfo.importer.model.Ranking;
+import de.hdawg.rankinginfo.importer.repository.Datasource;
 import de.hdawg.rankinginfo.importer.repository.RankingRepository;
 import de.hdawg.rankinginfo.importer.service.RankingCalculator;
 import de.hdawg.rankinginfo.importer.service.RankingFileProcessor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
 
 import java.util.List;
 import java.util.Map;
@@ -14,12 +16,6 @@ import java.util.Map;
  */
 @Slf4j
 public class RankingImporter {
-
-  public static void main(String[] args) {
-    RankingImporter rankingImporter = new RankingImporter();
-    String file = "src/test/resources/AlphaGesamtranglisteJuniorenfuerJugendturnierveranstalter_20221001.csv";
-    rankingImporter.importRankings(file);
-  }
 
   /**
    * main method orchestrating the flow of a ranking file import process.
@@ -40,6 +36,7 @@ public class RankingImporter {
 
   private void storeRankings(Map<String, Map<String, List<Ranking>>> rankingsMap) {
     RankingRepository repository = new RankingRepository();
+    repository.setJdbcTemplate(new JdbcTemplate(Datasource.getDataSource()));
     rankingsMap.forEach((key, rankingMap) -> {
       log.debug("storing entries of listing type {}", key);
       rankingMap
