@@ -1,3 +1,6 @@
+include:
+  - template: Code-Quality.gitlab-ci.yml
+
 variables:
   MAVEN_OPTS: >-
     -Dhttps.protocols=TLSv1.2
@@ -43,4 +46,8 @@ sonarcloud-check:
   only:
     - merge_requests
     - main
+  tags: [ranking-info-runner]
+
+code_quality:
+  services:
   tags: [ranking-info-runner]
