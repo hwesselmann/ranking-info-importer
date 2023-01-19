@@ -14,7 +14,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class RankingFileProcessorTest {
+class RankingFileProcessorTest {
 
   @Test
   @DisplayName("make sure player data was completely loaded from import file")

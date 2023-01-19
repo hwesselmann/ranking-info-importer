@@ -3,7 +3,7 @@ package de.hdawg.rankinginfo.importer;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-public class RankingImporterIntegrationTest {
+class RankingImporterIntegrationTest {
 
   @DisplayName("run the complete import dance")
   @Test

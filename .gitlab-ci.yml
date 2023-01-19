@@ -47,3 +47,6 @@ sonarcloud-check:
     - merge_requests
     - main
   tags: [ranking-info-runner]
+
+code_quality:
+  tags: [ranking-info-runner]

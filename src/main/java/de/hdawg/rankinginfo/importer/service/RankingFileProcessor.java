@@ -84,8 +84,7 @@ public class RankingFileProcessor {
         .withCSVParser(parser)
         .build();
 
-    List<String[]> lines = new ArrayList<>();
-    lines = reader.readAll();
+    List<String[]> lines = reader.readAll();
     reader.close();
 
     for (String[] line : lines) {
