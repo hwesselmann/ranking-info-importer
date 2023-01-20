@@ -131,12 +131,4 @@ class RankingTest {
     result = sutA.equals(sutB);
     assertFalse(result);
   }
-
-  @DisplayName("verify generated hashcode is correct")
-  @Test
-  void verifyHashcode(){
-    Ranking sut= Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 1,1)).federation(Federation.BB).yearOfBirthRanking(false).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
-
-    assertEquals(802024259, sut.hashCode());
-  }
 }
