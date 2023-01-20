@@ -8,8 +8,12 @@ import com.zaxxer.hikari.HikariDataSource;
  */
 public class Datasource {
 
+  private Datasource() {
+    // class should be instantiated as it only contains static methods.
+  }
+
   /**
-   * fetch a datasource
+   * fetch a datasource.
    *
    * @return hikari datasource
    */

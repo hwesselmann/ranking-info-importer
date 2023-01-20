@@ -1,6 +1,7 @@
 package de.hdawg.rankinginfo.importer.model;
 
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 import java.time.LocalDate;
@@ -9,6 +10,7 @@ import java.time.LocalDate;
  * model class for a ranking used as basis for the ranking-info application.
  */
 @Getter
+@EqualsAndHashCode
 @Builder
 public class Ranking implements Comparable<Ranking> {
   private LocalDate rankingPeriod;
