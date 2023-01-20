@@ -12,7 +12,7 @@ public enum Federation {
   STV("Sachsen"),
   TMV("Mecklenburg-Vorpommern"),
   TNB("Niedersachsen-Bremen"),
-  TSA("Sachsen-Anhanlt"),
+  TSA("Sachsen-Anhalt"),
   TTV("Thüringen"),
   TVM("Mittelrhein"),
   TVN("Niederrhein"),
@@ -23,5 +23,9 @@ public enum Federation {
 
   private Federation(String longName) {
     this.longName = longName;
+  }
+
+  public String value() {
+    return longName;
   }
 }
