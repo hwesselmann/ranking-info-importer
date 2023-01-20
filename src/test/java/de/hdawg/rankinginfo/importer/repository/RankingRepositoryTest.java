@@ -5,6 +5,7 @@ import com.zaxxer.hikari.HikariDataSource;
 import de.hdawg.rankinginfo.importer.model.Federation;
 import de.hdawg.rankinginfo.importer.model.Nationality;
 import de.hdawg.rankinginfo.importer.model.Ranking;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,12 @@ class RankingRepositoryTest {
 
     sut.storeRankings(inRankings);
 
-    assertEquals(0, getEntryCount());
+    assertEquals(10, getEntryCount());
+  }
+
+  @AfterEach
+  void tearDown() {
+    jdbcTemplate.execute("DROP TABLE RANKING");
   }
 
   private Ranking createTestRankings(LocalDate rankingPeriod, String dtbId, Nationality nationality, String points, int position) {
@@ -69,9 +75,9 @@ class RankingRepositoryTest {
 
   private HikariDataSource getDataSource() {
     HikariConfig config = new HikariConfig();
-    config.setJdbcUrl(System.getenv("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;INIT=runscript from 'classpath:/db.sql'"));
-    config.setUsername(System.getenv(""));
-    config.setPassword(System.getenv(""));
+    config.setJdbcUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;INIT=runscript from 'classpath:/db.sql'");
+    config.setUsername("");
+    config.setPassword("");
     config.addDataSourceProperty("cachePrepStmts", "true");
     config.addDataSourceProperty("prepStmtCacheSize", "250");
     config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");

@@ -32,14 +32,15 @@ class RankingImporterIntegrationTest {
     JdbcTemplate jdbcTemplate = new JdbcTemplate(getDatasource());
     int count = jdbcTemplate.queryForObject("SELECT COUNT(*) FROM RANKING;", Integer.class);
 
-    assertEquals(0, count);
+    assertEquals(11360, count);
+    jdbcTemplate.execute("DROP TABLE RANKING");
   }
 
   private HikariDataSource getDatasource() {
     HikariConfig config = new HikariConfig();
-    config.setJdbcUrl(System.getenv("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;INIT=runscript from 'classpath:/db.sql'"));
-    config.setUsername(System.getenv(""));
-    config.setPassword(System.getenv(""));
+    config.setJdbcUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+    config.setUsername("");
+    config.setPassword("");
     config.addDataSourceProperty("cachePrepStmts", "true");
     config.addDataSourceProperty("prepStmtCacheSize", "250");
     config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
