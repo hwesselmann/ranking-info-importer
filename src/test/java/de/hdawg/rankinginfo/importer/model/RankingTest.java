@@ -100,9 +100,15 @@ class RankingTest {
     sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(null).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(false).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
     result = sutA.equals(sutB);
     assertFalse(result);
+  }
 
-    sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
-    result = sutA.equals(sutB);
+  @DisplayName("verify the generated equal-method is correct for boolean values")
+  @Test
+  void verifyEqualsForBooleanValues() {
+    Ranking sutA = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 1,1)).federation(Federation.BB).yearOfBirthRanking(false).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
+
+    Ranking sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
+    boolean result = sutA.equals(sutB);
     assertFalse(result);
 
     sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(null).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
@@ -129,7 +135,7 @@ class RankingTest {
   @DisplayName("verify generated hashcode is correct")
   @Test
   void verifyHashcode(){
-    Ranking sut = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").build();
+    Ranking sut= Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 1,1)).federation(Federation.BB).yearOfBirthRanking(false).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
 
     assertEquals(802024259, sut.hashCode());
   }
