@@ -1,5 +1,10 @@
 package de.hdawg.rankinginfo.importer.model;
 
+/**
+ * enum for all nations available in the application.
+ * If a player from a nation not included in this list is added, the enum should be
+ * extended and the frontend application needs to make sure to update its assets accordingly.
+ */
 public enum Nationality {
   ARG("Argentinien"),
   AUS("Australien"),
@@ -65,9 +70,9 @@ public enum Nationality {
   VEN("Venezuela"),
   VIE("Vietnam");
 
-  private final String fullname;
+  private final String longname;
 
-  private Nationality(String longname) {
-    this.fullname = longname;
+  Nationality(String longname) {
+    this.longname = longname;
   }
 }
