@@ -254,4 +254,62 @@ class RankingTest {
     result = sutB.equals(sutA);
     assertFalse(result);
   }
+
+  @DisplayName("verify the generated equal-method is correct if some compared values are both null")
+  @Test
+  void verifyEqualsForNullValues() {
+    Ranking sutA = Ranking.builder().dtbId(null).firstname(null).lastname(null).position(null).points(null).club(null).nationality(null).rankingPeriod(null).federation(null).yearOfBirthRanking(null).endOfYearRanking(null).overallYouthRanking(null).ageGroup(null).build();
+
+    Ranking sutB = Ranking.builder().dtbId(null).firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
+    boolean result = sutA.equals(sutB);
+    assertFalse(result);
+
+    sutB = Ranking.builder().dtbId("12345678").firstname(null).lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
+    result = sutA.equals(sutB);
+    assertFalse(result);
+
+    sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname(null).position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
+    result = sutA.equals(sutB);
+    assertFalse(result);
+
+    sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(null).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
+    result = sutA.equals(sutB);
+    assertFalse(result);
+
+    sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points(null).club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
+    result = sutA.equals(sutB);
+    assertFalse(result);
+
+    sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club(null).nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
+    result = sutA.equals(sutB);
+    assertFalse(result);
+
+    sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(null).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
+    result = sutA.equals(sutB);
+    assertFalse(result);
+
+    sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(null).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
+    result = sutA.equals(sutB);
+    assertFalse(result);
+
+    sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(null).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
+    result = sutA.equals(sutB);
+    assertFalse(result);
+
+    sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(null).endOfYearRanking(false).overallYouthRanking(false).ageGroup("U12").build();
+    result = sutA.equals(sutB);
+    assertFalse(result);
+
+    sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(null).overallYouthRanking(false).ageGroup("U12").build();
+    result = sutA.equals(sutB);
+    assertFalse(result);
+
+    sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(null).ageGroup("U12").build();
+    result = sutA.equals(sutB);
+    assertFalse(result);
+
+    sutB = Ranking.builder().dtbId("12345678").firstname("Max").lastname("Mustermann").position(20).points("22").club("Musterstadt").nationality(Nationality.GER).rankingPeriod(LocalDate.of(2022, 2,1)).federation(Federation.BB).yearOfBirthRanking(true).endOfYearRanking(false).overallYouthRanking(false).ageGroup(null).build();
+    result = sutA.equals(sutB);
+    assertFalse(result);
+  }
 }
