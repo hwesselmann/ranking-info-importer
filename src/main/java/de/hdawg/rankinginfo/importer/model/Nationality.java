@@ -45,7 +45,7 @@ public enum Nationality {
   MEX("Mexiko"),
   MKD("Mazedonien"),
   MRI("Mauritius"),
-  NAM("Nabimia"),
+  NAM("Namibia"),
   NED("Niederlande"),
   NOR("Norwegen"),
   NZL("Neuseeland"),
