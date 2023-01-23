@@ -1,5 +1,8 @@
 package de.hdawg.rankinginfo.importer.model;
 
+/**
+ * model enum for German Tennis federations.
+ */
 public enum Federation {
   BAD("Baden"),
   BB("Berlin-Brandenburg"),
@@ -21,10 +24,15 @@ public enum Federation {
 
   private final String longName;
 
-  private Federation(String longName) {
+  Federation(String longName) {
     this.longName = longName;
   }
 
+  /**
+   * get the long value for the enum value.
+   *
+   * @return long name of enum value
+   */
   public String value() {
     return longName;
   }
