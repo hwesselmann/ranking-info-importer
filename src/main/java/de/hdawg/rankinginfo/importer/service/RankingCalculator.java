@@ -36,7 +36,7 @@ public class RankingCalculator {
     calculatedRankings.put("yearOfBirth", calculateYearOfBirthRankings(importRankings, rankingPeriod));
 
     // check if this is the final ranking for this year. If so, do an extra calculation.
-    if (rankingPeriod.getMonthValue() == 12) {
+    if (rankingPeriod.getMonthValue() == 1) {
       calculatedRankings.put("endOfYear", calculateFinalRankingsForThisYear(importRankings, rankingPeriod));
     }
 
