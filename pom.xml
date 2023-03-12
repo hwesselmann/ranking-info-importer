@@ -5,7 +5,7 @@
 
   <groupId>de.hdawg</groupId>
   <artifactId>rankinginfo</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1-SNAPSHOT</version>
   <name>ranking-importer</name>
   <description>ranking-importer</description>
 

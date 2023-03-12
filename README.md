@@ -2,4 +2,9 @@
 
 ![example workflow](https://github.com/hwesselmann/ranking-info-importer/actions/workflows/ci-build.yaml/badge.svg)
 
-The import module for calculation the age group rankings for a newly imported ranking dataset.
+The import module, performing all calculations and persistence operations needed when adding a new dataset to the ranking-info database.
+
+## requirements
+* Java 17
+* Apache Maven 3.8.6 or newer
+* configuration data for the target database
