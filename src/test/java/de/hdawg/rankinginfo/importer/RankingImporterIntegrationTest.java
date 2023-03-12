@@ -21,7 +21,7 @@ class RankingImporterIntegrationTest {
   @DisplayName("run the complete import dance")
   @Test
   void performRankingImport(EnvironmentVariables environmentVariables) {
-    environmentVariables.set("DB_JDBC_URL", "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;INIT=runscript from 'classpath:/db.sql'");
+    environmentVariables.set("DB_JDBC_URL", "jdbc:h2:mem:integtest;DB_CLOSE_DELAY=-1;INIT=runscript from 'classpath:/db.sql'");
     environmentVariables.set("DB_USER", "");
     environmentVariables.set("DB_PASSWORD", "");
 
@@ -38,7 +38,7 @@ class RankingImporterIntegrationTest {
 
   private HikariDataSource getDatasource() {
     HikariConfig config = new HikariConfig();
-    config.setJdbcUrl("jdbc:h2:mem:test;DB_CLOSE_DELAY=-1");
+    config.setJdbcUrl("jdbc:h2:mem:integtest;DB_CLOSE_DELAY=-1");
     config.setUsername("");
     config.setPassword("");
     config.addDataSourceProperty("cachePrepStmts", "true");
